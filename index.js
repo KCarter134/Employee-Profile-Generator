@@ -42,25 +42,25 @@ function displayInfo () {
             {
                 type: "input",
                 name: "managerName",
-                message: "What is the managers name?"
+                message: "Please enter managers name"
             },
 
             {
                 type: "input",
                 name: "managerId",
-                message: "What is the managers employee ID number?"
+                message: "Please enter managers employee ID number"
             },
 
             {
                 type: "input",
                 name: "managerEmail",
-                message: "What is the managers email address?"
+                message: "Please enter managers email address"
             },
 
             {
                 type: "input",
                 name: "managerOfficeNumber",
-                message: "What is the managers office number?"
+                message: "Please enter managers office number"
             }
 
         ]).then(answers => {
@@ -78,25 +78,25 @@ function displayInfo () {
             {
                 type: "input",
                 name: "engineerName",
-                message: "What is the engineer's name?"
+                message: "Please enter engineers name"
             },
 
             {
                 type: "input",
                 name: "engineerId",
-                message: "What is the engineer's employee ID number?"
+                message: "Please enter engineers employee ID number"
             },
 
             {
                 type: "input",
                 name: "engineerEmail",
-                message: "What is the engineer's email address?"
+                message: "Please enter engineers email address"
             },
 
             {
                 type: "input",
                 name: "engineerGithub",
-                message: "What is the engineer's GitHub username?"
+                message: "Please enter engineers GitHub username"
             }
 
         ]).then(answers => {
@@ -113,25 +113,25 @@ function displayInfo () {
             {
                 type: "input",
                 name: "internName",
-                message: "What is the intern's name?"
+                message: "Please enter interns name"
             },
 
             {
                 type: "input",
                 name: "internId",
-                message: "What is the intern's employee ID number?"
+                message: "Please enter interns employee ID number"
             },
 
             {
                 type: "input",
                 name: "internEmail",
-                message: "What is the intern's email address?"
+                message: "Please enter interns email address"
             },
 
             {
                 type: "input",
                 name: "internSchool",
-                message: "What school does the intern attend?"
+                message: "Please enter interns school name"
             }
 
         ]).then(answers => {
