@@ -13,7 +13,7 @@ const questions = [
         type: "list",
         name: "memberType",
         message: "What role does the employee play?",
-        choices: ["Manager", "Engineer", "Intern", "Finish"],
+        choices: ["Manager", "Engineer", "Intern", "All Done"],
     },
 ];
 
@@ -91,7 +91,7 @@ function manager() {
     inquirer.prompt(managerQuestions).then((res) => {
         const manager = new Manager(res.name, res.id, res.email, res.officeNumber);
         display.push(manager);
-        addTeamQuestions();
+        questionDisplay();
     });
 }
 
@@ -99,7 +99,7 @@ function engineer() {
     inquirer.prompt(engineerQuestions).then((res) => {
         const engineer = new Engineer(res.name, res.id, res.email, res.githubUsername);
         display.push(engineer);
-        addTeamQuestions();
+        questionDisplay();
     });
 }
 
@@ -107,11 +107,11 @@ function intern() {
     inquirer.prompt(internQuestions).then((res) => {
         const intern = new Intern(res.name, res.id, res.email, res.school);
         display.push(intern);
-        addTeamQuestions();
+        questionDisplay();
     });
 }
 
-function addTeamQuestions() {
+function questionDisplay() {
     inquirer.prompt(questions).then((res) => {
         switch (res.memberType) {
             case "Engineer":
@@ -128,13 +128,11 @@ function addTeamQuestions() {
                 fs.writeFileSync("./dist/profile.html", generatePage(display));
         }
     });
-
-
 }
 
 function finish() {
     console.log("HTML has been created");
-    addTeamQuestions();
+    questionDisplay();
 }
 
 finish();
