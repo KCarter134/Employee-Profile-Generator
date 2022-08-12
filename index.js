@@ -1,143 +1,140 @@
-const Manager = require("./lib/Manager.js");
-const Engineer = require("./lib/Engineer.js");
-const Intern = require("./lib/Intern.js");
-const generatePage = require("./src/pageTemplate.js")
-const htmlPush = path.join(page, "profile.html");
 const inquirer = require("inquirer");
-const path = require("path");
 const fs = require("fs");
-const page = path.resolve(__dirname, "dist");
+const Manager = require("./lib/Manager");
+const Engineer = require("./lib/Engineer");
+const Intern = require("./lib/Intern");
+const generatePage = require("./src/pageTemplate");
 
-teamArray = [];
+const display= [];
 
-function displayInfo () {
+//List of questions to be displayed in HTML
+const questions = [
+    {
+        type: "list",
+        name: "memberType",
+        message: "What role does the employee play?",
+        choices: ["Manager", "Engineer", "Intern", "Finish"],
+    },
+];
 
-    function createTeam () {
-        inquirer.prompt([{
-            type: "list",
-            message: "Who is being added to the team?",
-            name: "employeeAdd",
-            choices: ["Manager", "Engineer", "Intern", "ALL FINISHED"]
-        }]).then(function (userInput) {
-            switch(userInput.employeeAdd) {
-                case "Manager":
-                    addManager();
-                    break;
-                case "Engineer":
-                    addEngineer();
-                    break;
-                case "Intern":
-                    addIntern();
-                    break;
+const managerQuestions = [
+    {
+        type: "input",
+        name: "name",
+        message: "What is the manager's name?",
+    },
+    {
+        type: "input",
+        name: "id",
+        message: "What is the manager's id?",
+    },
+    {
+        type: "input",
+        name: "email",
+        message: "What is the manager's email?",
+    },
+    {
+        type: "input",
+        name: "officeNumber",
+        message: "What is the manager's office number?",
+    },
+];
 
-                default:
-                    pageDisplay();
-            }
-        })
-    }
-    // add manager credentials to prompt
-    function addManager() {
-        inquirer.prompt ([
+const engineerQuestions = [
+    {
+        type: "input",
+        name: "name",
+        message: "What is the engineer's name?",
+    },
+    {
+        type: "input",
+        name: "id",
+        message: "What is the engineer's id?",
+    },
+    {
+        type: "input",
+        name: "email",
+        message: "What is the engineer's email?",
+    },
+    {
+        type: "input",
+        name: "githubUsername",
+        message: "What is the engineer's github username?",
+    },
+];
 
-            {
-                type: "input",
-                name: "managerName",
-                message: "Please enter managers name"
-            },
+const internQuestions = [
+    {
+        type: "input",
+        name: "name",
+        message: "What is the intern's name?",
+    },
+    {
+        type: "input",
+        name: "id",
+        message: "What is the intern's id?",
+    },
+    {
+        type: "input",
+        name: "email",
+        message: "What is the intern's email?",
+    },
+    {
+        type: "input",
+        name: "school",
+        message: "Where did the intern go to school",
+    },
+];
 
-            {
-                type: "input",
-                name: "managerId",
-                message: "Please enter managers employee ID number"
-            },
+// all functions to run the prompts are here
+function manager() {
+    inquirer.prompt(managerQuestions).then((res) => {
+        const manager = new Manager(res.name, res.id, res.email, res.officeNumber);
+        display.push(manager);
+        addTeamQuestions();
+    });
+}
 
-            {
-                type: "input",
-                name: "managerEmail",
-                message: "Please enter managers email address"
-            },
+function engineer() {
+    inquirer.prompt(engineerQuestions).then((res) => {
+        const engineer = new Engineer(res.name, res.id, res.email, res.githubUsername);
+        display.push(engineer);
+        addTeamQuestions();
+    });
+}
 
-            {
-                type: "input",
-                name: "managerOfficeNumber",
-                message: "Please enter managers office number"
-            }
+function intern() {
+    inquirer.prompt(internQuestions).then((res) => {
+        const intern = new Intern(res.name, res.id, res.email, res.school);
+        display.push(intern);
+        addTeamQuestions();
+    });
+}
 
-        ]).then(answers => {
-            const manager = new Manager(answers.managerName, answers.managerId, answers.managerEmail, answers.managerOfficeNumber);
-            teamArray.push(manager);
-            createTeam();
-        });
+function addTeamQuestions() {
+    inquirer.prompt(questions).then((res) => {
+        switch (res.memberType) {
+            case "Engineer":
+                engineer();
+                break;
+            case "Intern":
+                intern();
+                break;
+            case "Manager":
+                manager();
+                break;
+            case "All Done":
+                console.log("HTML has been created.")
+                fs.writeFileSync("./dist/profile.html", generatePage(display));
+        }
+    });
 
-    }
 
+}
 
-    function addEngineer() {
-        inquirer.prompt([
+function finish() {
+    console.log("HTML has been created");
+    addTeamQuestions();
+}
 
-            {
-                type: "input",
-                name: "engineerName",
-                message: "Please enter engineers name"
-            },
-
-            {
-                type: "input",
-                name: "engineerId",
-                message: "Please enter engineers employee ID number"
-            },
-
-            {
-                type: "input",
-                name: "engineerEmail",
-                message: "Please enter engineers email address"
-            },
-
-            {
-                type: "input",
-                name: "engineerGithub",
-                message: "Please enter engineers GitHub username"
-            }
-
-        ]).then(answers => {
-            const engineer = new Engineer(answers.engineerName, answers.engineerId, answers.engineerEmail, answers.engineerGithub);
-            teamArray.push(engineer);
-            createTeam();
-        });
-
-    }
-
-    function addIntern() {
-        inquirer.prompt([
-
-            {
-                type: "input",
-                name: "internName",
-                message: "Please enter interns name"
-            },
-
-            {
-                type: "input",
-                name: "internId",
-                message: "Please enter interns employee ID number"
-            },
-
-            {
-                type: "input",
-                name: "internEmail",
-                message: "Please enter interns email address"
-            },
-
-            {
-                type: "input",
-                name: "internSchool",
-                message: "Please enter interns school name"
-            }
-
-        ]).then(answers => {
-            const intern = new Intern(answers.internName, answers.internId, answers.internEmail, answers.internSchool);
-            teamArray.push(intern);
-            createTeam();
-        });
-
-    }}
+finish();
